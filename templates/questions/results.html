@@ -1,0 +1,14 @@
+<h1>{{ test }}</h1>
+ {% for q in test.questions.all %}
+    {{ q.question }}
+    {% for answer in q.answers.all %}
+        {{ answer.votes }}
+    {% endfor %}
+{% endfor %}
+<ul>
+{% for answer in question.answers.all|dictsortreversed:"votes" %}
+    <li>{{ answer.answer }} - голосов: {{ answer.votes }}</li>
+{% endfor %}
+</ul>
+ 
+<a href="{% url 'questions:index' %}">К тестам</a>

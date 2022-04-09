@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+{% block content %}
+{% for test in tests %}
+    <br>
+    <p><strong>{{ test }}</strong></p> 
+    <a type="button" href="{% url 'questions:tests' test.id %} " class="btn btn-secondary btn-sm">Перейти к тесту</a>
+    <br>
+{% endfor %} 
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+Вы вышли
+<a class="btn btn-outline-danger" href="{% url 'users:login' %}"> Войти заново</a>
+{% endblock %}
