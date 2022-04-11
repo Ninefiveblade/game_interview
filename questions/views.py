@@ -5,7 +5,6 @@ from django.views.generic import DetailView
 from .models import Answer, Result, Test, Question
 
 
-@login_required
 def index(request):
     template = 'questions/index.html'
     tests = Test.objects.all()
@@ -16,12 +15,21 @@ def index(request):
 
 
 class TestView(DetailView):
-    template_name = 'questions/questions.html'
+    template_name = 'questions/test.html'
     context_object_name = 'test'
 
-    def get_queryset(self):
-        """Вернуть 2 последних свежих опроса"""
-        return Test.objects.all()
+    def get_object(self):
+        test_id = self.kwargs.get('pk')
+        return Test.objects.get(pk=test_id)
+
+
+class QuestionView(DetailView):
+    template_name = 'questions/question.html'
+    context_object_name = 'question'
+
+    def get_object(self):
+        question_id = self.kwargs.get('question_id')
+        return Question.objects.get(pk=question_id)
 
 
 def vote(request, pk):
@@ -39,7 +47,7 @@ def vote(request, pk):
                 print(answer.vote)
                 answer.save()
             else:
-                template = 'questions/questions.html'
+                template = 'questions/tests.html'
                 context = {
                     'error_message': f'Ваш ответ: {answer.answer} неверный',
                     'correct_test': f'Правильные ответы:{test.questions.filter(answers__correct=True)}'

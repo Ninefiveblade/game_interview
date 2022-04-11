@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="p-3 mb-2 bg-secondary text-white">
+        <strong>{{ question.question }}</strong>
+    </div>
+        {% for answer in question.answers.all %}
+            <p>
+                <h6>
+                <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}" />
+                    <label for="answer{{ forloop.counter }}">{{ answer.answer }}</label>
+                </h6>
+            </p>
+        {% endfor %}
+        <form method="post"
+        action="{% url 'questions:vote' question.test_id.id %}">
+        <button  type="submit">Ответить</button>
+        {% csrf_token %}
+        </form>
+        <a type="button" href="{% url 'questions:tests' question.test_id.id %} " class="btn btn-secondary btn-sm">Назад к тесту "{{ question.test_id }}"</a>
+{% endblock %}

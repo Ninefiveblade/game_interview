@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="p-3 mb-2 bg-secondary text-white">
+        <strong>{{ test }}</strong>
+    </div>
+
+    {% for questions in test.questions.all %}
+        <p>{{ questions.question }}
+        <a type="button" href="{% url 'questions:question' test.id questions.id %}" class="btn btn-secondary btn-sm">Перейти к вопросу</a>
+        </p>
+    {% endfor %}
+{% endblock %}
