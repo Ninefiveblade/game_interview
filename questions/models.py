@@ -14,7 +14,7 @@ class Test(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Тесты'
+        verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
 
 
@@ -24,7 +24,15 @@ class Question(models.Model):
         on_delete=models.CASCADE,
         related_name='questions'
     )
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
 
 
 class Answer(models.Model):
@@ -51,3 +59,7 @@ class Result(models.Model):
         on_delete=models.CASCADE
     )
     result_rating = models.FloatField()
+
+    class Meta:
+        verbose_name = 'Результат'
+        verbose_name_plural = 'Результаты'

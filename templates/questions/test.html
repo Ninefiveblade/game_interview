@@ -6,7 +6,7 @@
 
     {% for questions in test.questions.all %}
         <p>{{ questions.question }}
-        <a type="button" href="{% url 'questions:question' test.id questions.id %}" class="btn btn-secondary btn-sm">Перейти к вопросу</a>
+        <a type="button" href="{% url 'questions:question' questions.id %}" class="btn btn-secondary btn-sm">Перейти к вопросу</a>
         </p>
     {% endfor %}
 {% endblock %}
