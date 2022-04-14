@@ -1,10 +1,11 @@
-from audioop import reverse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
 
 from .models import Answer, Result, Test, Question
 
+
+@login_required
 def index(request):
     template = 'questions/index.html'
     tests = Test.objects.all()
@@ -42,11 +43,15 @@ def vote(request, pk):
     if request.method == 'POST':
         answers_id = request.POST.getlist('answer')
         for answer in answers_id:
+            answer = Answer.objects.get(id=answer)
             if Answer.objects.get(id=answer).correct:
-                answer = Answer.objects.get(id=answer)
                 answer.vote += 1
-                answer.user = request.user
-                answer.save()
+                answer.correct = Answer.objects.get(id=answer).correct
+            else:
+                answer.vote -= 1
+                answer.correct = Answer.objects.get(id=answer).correct
+            answer.user = request.user
+            answer.save()
             return redirect('questions:question', pk+1)
     # сохранили ответ в базу, заодно проверили правильный ли ответ
     # return redirect(reverse("question", id=get_next_id(question_id)))
