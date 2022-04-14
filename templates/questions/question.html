@@ -7,20 +7,28 @@
         {% for answer in question.answers.all %}
         <form method="post"
         action="{% url 'questions:vote' question.id %}">
+        {% if correct_answer == 1 %}
             <p>
                 <h6>
                 <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}" />
                     <label for="answer{{ forloop.counter }}">{{ answer.answer }}</label>
                 </h6>
             </p>
+        {% else %} 
+            <p>
+                <h6>
+                <input type="checkbox" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}" />
+                    <label for="answer{{ forloop.counter }}">{{ answer.answer }}</label>
+                </h6>
+            </p>
+        {% endif %}
         {% endfor %}
+        {% if question.id != last_question_id %}
         <button  type="submit">Ответить</button>
+        {% else %}
+        <a><button  type="submit">Сдать тест</button></a>
+        {% endif %}
         {% csrf_token %}
         </form>
-        <a type="button" href="{% url 'questions:tests' question.test_id.id %} " class="btn btn-secondary btn-sm">Назад к тесту "{{ question.test_id }}"</a>
-{% endblock %}
-
-    <input class="form-check-input" type="checkbox" value="{{ answer.id }}" id="answer{{ forloop.counter }}"/>
-    <label class="form-check-label" for="answer{{ forloop.counter }}">
-    {{ answer.answer }}
-    </label>
+            <a type="button" href="{% url 'questions:tests' question.test_id.id %} " class="btn btn-secondary btn-sm">Назад к тесту "{{ question.test_id }}"</a>
+    {% endblock %}
