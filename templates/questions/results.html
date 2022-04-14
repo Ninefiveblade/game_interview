@@ -1,14 +1,12 @@
-<h1>{{ test }}</h1>
- {% for q in test.questions.all %}
-    {{ q.question }}
-    {% for answer in q.answers.all %}
-        {{ answer.votes }}
-    {% endfor %}
+{% extends "base.html" %}
+{% block content %}
+{% for result in results %}
+    {{ result.test_id }}
+    <p>Результат: {{ result.result_rating }}</p>
+    {% if result.result_rating < 10 %}
+        ТЕСТ НЕ ПРОЙДЕН
+    {% else %}
+        ТЕСТ ПРОЙДЕН
+    {% endif %}
 {% endfor %}
-<ul>
-{% for answer in question.answers.all|dictsortreversed:"votes" %}
-    <li>{{ answer.answer }} - голосов: {{ answer.votes }}</li>
-{% endfor %}
-</ul>
- 
-<a href="{% url 'questions:index' %}">К тестам</a>
+{% endblock %}

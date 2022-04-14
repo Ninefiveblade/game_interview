@@ -24,9 +24,10 @@
         {% endif %}
         {% endfor %}
         {% if question.id != last_question_id %}
-        <button  type="submit">Ответить</button>
+        <button type="submit">Следующий вопрос</button>
         {% else %}
-        <a><button  type="submit">Сдать тест</button></a>
+        <form>
+        <button  type="submit">Сдать тест</button></a>
         {% endif %}
         {% csrf_token %}
         </form>

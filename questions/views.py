@@ -42,23 +42,32 @@ def vote(request, pk):
     q = Question.objects.get(id=pk)
     if request.method == 'POST':
         answers_id = request.POST.getlist('answer')
+        count = 0
         for answer in answers_id:
-            answer = Answer.objects.get(id=answer)
             if Answer.objects.get(id=answer).correct:
+                answer = Answer.objects.get(id=answer)
+                count += 10
                 answer.vote += 1
-                answer.correct = Answer.objects.get(id=answer).correct
             else:
-                answer.vote -= 1
-                answer.correct = Answer.objects.get(id=answer).correct
-            answer.user = request.user
-            answer.save()
+                answer = Answer.objects.get(id=answer)
+                count -= 10
+                answer.vote += 1
+            Result.objects.update(
+                id=29,
+                result_rating=count,
+                user=request.user,
+                test_id=q.test_id
+            )
             return redirect('questions:question', pk+1)
-    # сохранили ответ в базу, заодно проверили правильный ли ответ
-    # return redirect(reverse("question", id=get_next_id(question_id)))
-    # где get_next_id может опирать на какое-нибудь поле в Question, например
-    # при создании объекта вопроса мы указываем его порядковый номер
+        print(count)
+        return redirect('questions:result', q.test_id.id)
 
 
-class ResultsView(DetailView):
-    model = Result
-    template_name = 'questions/results.html'
+def results(request, test_id):
+    result = Result.objects.filter(test_id=test_id)
+    print(result)
+    template = 'questions/results.html'
+    context = {
+        'results': result,
+    }
+    return render(request, template, context)
